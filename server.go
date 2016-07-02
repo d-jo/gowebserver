@@ -1,17 +1,26 @@
 package main
 
 import (
-	//"github.com/d-jo/webserver/structs"
+	"fmt"
 	"github.com/d-jo/webserver/io-ops"
+	"github.com/d-jo/webserver/structs"
+	"html/template"
 	"net/http"
 	"regexp"
 )
 
+var templates = template.Must(template.ParseGlob("web/templates/*.html"))
+var validPath = regexp.MustCompile("^/(e|w|s|p)/([a-zA-Z0-9]+)$")
+
 func viewSnippit(w http.ResponseWriter, r *http.Request, id string) {
-
+	snip, err := io_ops.GetCodeSnipFromDB(id)
+	if err != nil {
+		// custom 404 TODO
+		http.NotFound(w, r)
+		return
+	}
+	executeTemplate(w, "viewcodesnip", snip)
 }
-
-var validPath = regexp.MustCompile("^/(e|w|s)/([a-zA-Z0-9]+)$")
 
 func makeHandler(fn func(w http.ResponseWriter, r *http.Request, id string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -24,9 +33,16 @@ func makeHandler(fn func(w http.ResponseWriter, r *http.Request, id string)) htt
 	}
 }
 
+func executeTemplate(w http.ResponseWriter, templateName string, cs structs.CodeSnip) {
+	err := templates.ExecuteTemplate(w, fmt.Sprintf("%s.html", templateName), cs)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 func main() {
-	//http.HandleFunc("/s/", makeHandler(viewSnippit))
-	//http.HandleFunc("/w/", makeHandler(saveSnippit))
-	//http.HandleFunc("/e/", makeHandler(editSnippit))
-	io_ops.Test()
+	http.HandleFunc("/s/", makeHandler(viewSnippit))
+	//http.HandleFunc("/write/", makeHandler(saveSnippit))
+	//http.HandleFunc("/e/", editSnippit)
+	http.ListenAndServe(":8080", nil)
 }

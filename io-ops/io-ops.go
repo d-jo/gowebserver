@@ -64,10 +64,3 @@ func InsertCodeSnipToDB(snip structs.CodeSnip) int {
 func Close() {
 	db.Close()
 }
-
-func Test() {
-
-	UpdatePointsInDB(-5, -34, "7")
-	fmt.Println("asdf")
-	Close()
-}
