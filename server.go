@@ -19,8 +19,26 @@ func viewSnippit(w http.ResponseWriter, r *http.Request, id string) {
 		http.NotFound(w, r)
 		return
 	}
-	executeTemplate(w, "viewcodesnip", snip)
+	executeViewTemplate(w, "viewcodesnip", snip)
 }
+
+func createSnippit(w http.ResponseWriter, r *http.Request) {
+	err := templates.ExecuteTemplate(w, "createcodesnip.html", nil)
+	if err != nil {
+		http.NotFound(w, r)
+	}
+}
+
+func saveSnippit(w http.ResponseWriter, r *http.Request) {
+	title := r.FormValue("title")
+	body := r.FormValue("body")
+	id, err := io_ops.InsertCodeSnipToDB(structs.CodeSnip{Title: title, Content: body})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	http.Redirect(w, r, fmt.Sprintf("/s/%d", id), http.StatusFound)
+}
+
 
 func makeHandler(fn func(w http.ResponseWriter, r *http.Request, id string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +51,7 @@ func makeHandler(fn func(w http.ResponseWriter, r *http.Request, id string)) htt
 	}
 }
 
-func executeTemplate(w http.ResponseWriter, templateName string, cs structs.CodeSnip) {
+func executeViewTemplate(w http.ResponseWriter, templateName string, cs structs.CodeSnip) {
 	err := templates.ExecuteTemplate(w, fmt.Sprintf("%s.html", templateName), cs)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -42,7 +60,7 @@ func executeTemplate(w http.ResponseWriter, templateName string, cs structs.Code
 
 func main() {
 	http.HandleFunc("/s/", makeHandler(viewSnippit))
-	//http.HandleFunc("/write/", makeHandler(saveSnippit))
-	//http.HandleFunc("/e/", editSnippit)
+	http.HandleFunc("/write/", saveSnippit)
+	http.HandleFunc("/c/", createSnippit)
 	http.ListenAndServe(":8080", nil)
 }

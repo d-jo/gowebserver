@@ -48,17 +48,16 @@ func GetCodeSnipFromDB(id string) (structs.CodeSnip, error) {
 	return structs.CodeSnip{Title: titleScan, Content: contentScan, GoodPoints: goodPointsScan, IdiomPoints: idiomPointsScan}, err
 }
 
-func InsertCodeSnipToDB(snip structs.CodeSnip) int {
+func InsertCodeSnipToDB(snip structs.CodeSnip) (int, error) {
 	res, err := db.Exec(preparedInsert, snip.Title, snip.Content, snip.GoodPoints, snip.IdiomPoints)
 	if err != nil {
-		panic(err.Error())
+		return -1, err
 	}
 	lastId, err := res.LastInsertId()
 	if err != nil {
-		fmt.Errorf("Error! %s", err.Error())
-		return 0
+		return -1, err
 	}
-	return int(lastId)
+	return int(lastId), nil
 }
 
 func Close() {
