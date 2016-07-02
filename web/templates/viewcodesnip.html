@@ -2,10 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/default.min.css">
+    <link type="text/css" rel="stylesheet" href="/static/viewstyles.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            });
+        });
+    </script>
     <title>{{.Title}} - GoCode</title>
 </head>
 <body>
+    <div class=""></div>
     <h1>{{.Title}} - Good points: {{.GoodPoints}} - Idiom Points: {{.IdiomPoints}}</h1>
-    <p>{{.Content}}</p>
+    <p><pre><code class="golang">{{.Content}}</code></pre></p>
 </body>
 </html>
