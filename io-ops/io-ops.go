@@ -10,7 +10,9 @@ import (
 
 var db sql.DB
 var preparedSelect = "SELECT title, content, good_points, idiom_points FROM snippits WHERE id=? LIMIT 1"
+var preparedSelectPoints = "SELECT good_points, idiom_points FROM snippits WHERE id=? LIMIT 1"
 var preparedInsert = "INSERT INTO snippits (title, content, good_points, idiom_points) VALUES (?, ?, ?, ?)"
+var preparedUpdatePoints = "UPDATE snippits SET good_points=?,idiom_points=? WHERE id=?"
 
 func init() {
 	if len(os.Args[1:]) != 3 {
@@ -25,6 +27,18 @@ func init() {
 	if err != nil {
 		panic(err.Error())
 	}
+}
+
+func UpdatePointsInDB(goodPointsDelta, idiomPointsDelta int, id string) {
+	goodPoints, idiomPoints := getPointsForId(id)
+	goodPoints, idiomPoints = goodPoints + goodPointsDelta, idiomPoints + idiomPointsDelta
+	db.Exec(preparedUpdatePoints, goodPoints, idiomPoints, id)
+}
+
+func getPointsForId(id string) (int, int) {
+	var goodPointsScan, idiomPointsScan int
+	db.QueryRow(preparedSelectPoints, id).Scan(&goodPointsScan, &idiomPointsScan)
+	return goodPointsScan, idiomPointsScan
 }
 
 func GetCodeSnipFromDB(id string) structs.CodeSnip {
@@ -49,7 +63,7 @@ func InsertCodeSnipToDB(snip structs.CodeSnip) int {
 
 func Test() {
 
-	InsertCodeSnipToDB(structs.CodeSnip{Title:"testing with command line", Content:"if this works this should insert with commabnd line args", GoodPoints:5, IdiomPoints:34})
+	UpdatePointsInDB(-5, -34, "7")
 	fmt.Println("asdf")
 	db.Close()
 
