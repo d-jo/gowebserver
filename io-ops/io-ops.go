@@ -41,11 +41,11 @@ func getPointsForId(id string) (int, int) {
 	return goodPointsScan, idiomPointsScan
 }
 
-func GetCodeSnipFromDB(id string) structs.CodeSnip {
+func GetCodeSnipFromDB(id string) (structs.CodeSnip, error) {
 	var titleScan, contentScan string
 	var goodPointsScan, idiomPointsScan int
-	db.QueryRow(preparedSelect, id).Scan(&titleScan, &contentScan, &goodPointsScan, &idiomPointsScan)
-	return structs.CodeSnip{Title: titleScan, Content: contentScan, GoodPoints: goodPointsScan, IdiomPoints: idiomPointsScan}
+	err := db.QueryRow(preparedSelect, id).Scan(&titleScan, &contentScan, &goodPointsScan, &idiomPointsScan)
+	return structs.CodeSnip{Title: titleScan, Content: contentScan, GoodPoints: goodPointsScan, IdiomPoints: idiomPointsScan}, err
 }
 
 func InsertCodeSnipToDB(snip structs.CodeSnip) int {
