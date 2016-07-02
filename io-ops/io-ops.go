@@ -2,9 +2,9 @@ package io_ops
 
 import (
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
 	"fmt"
 	"github.com/d-jo/webserver/structs"
+	_ "github.com/go-sql-driver/mysql"
 	"os"
 )
 
@@ -31,7 +31,7 @@ func init() {
 
 func UpdatePointsInDB(goodPointsDelta, idiomPointsDelta int, id string) {
 	goodPoints, idiomPoints := getPointsForId(id)
-	goodPoints, idiomPoints = goodPoints + goodPointsDelta, idiomPoints + idiomPointsDelta
+	goodPoints, idiomPoints = goodPoints+goodPointsDelta, idiomPoints+idiomPointsDelta
 	db.Exec(preparedUpdatePoints, goodPoints, idiomPoints, id)
 }
 
@@ -61,10 +61,13 @@ func InsertCodeSnipToDB(snip structs.CodeSnip) int {
 	return int(lastId)
 }
 
+func Close() {
+	db.Close()
+}
+
 func Test() {
 
 	UpdatePointsInDB(-5, -34, "7")
 	fmt.Println("asdf")
-	db.Close()
-
+	Close()
 }
