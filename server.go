@@ -62,5 +62,6 @@ func main() {
 	http.HandleFunc("/s/", makeHandler(viewSnippit))
 	http.HandleFunc("/write/", saveSnippit)
 	http.HandleFunc("/c/", createSnippit)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 	http.ListenAndServe(":8080", nil)
 }
