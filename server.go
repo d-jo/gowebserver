@@ -7,10 +7,13 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
+	"strings"
 )
 
-var templates = template.Must(template.ParseGlob("web/templates/*.html"))
-var validPath = regexp.MustCompile("^/(e|w|s|p)/([a-zA-Z0-9]+)$")
+var templates = template.Must(template.New("main").Funcs(template.FuncMap{
+
+}).ParseGlob("web/templates/*.html"))
+var validPath = regexp.MustCompile("^/(e|write|s|p)/([a-zA-Z0-9]+)$")
 
 func viewSnippit(w http.ResponseWriter, r *http.Request, id string) {
 	snip, err := io_ops.GetCodeSnipFromDB(id)
