@@ -7,7 +7,6 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
-	"strings"
 )
 
 var templates = template.Must(template.New("main").Funcs(template.FuncMap{
