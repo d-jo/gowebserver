@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
-    <link type="text/css" rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/default.min.css">
-    <link type="text/css" rel="stylesheet" href="/static/viewstyles.css">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('pre code').each(function(i, block) {
-                hljs.highlightBlock(block);
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link type="text/css" rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/default.min.css">
+        <link type="text/css" rel="stylesheet" href="/static/viewstyles.css">
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
             });
-        });
-    </script>
-    <title>{{.Title}} - GoCode</title>
-</head>
-<body>
-    <div class=""></div>
-    <h1>{{.Title}} - Good points: {{.GoodPoints}} - Idiom Points: {{.IdiomPoints}}</h1>
-    <p><pre><code class="golang">{{.Content}}</code></pre></p>
-</body>
+        </script>
+        <title>{{.Title}} - GoCode</title>
+    </head>
+    <body>
+        <div class="left"><a href="/login/">Log in</a></div>
+        <h1>{{.Title}} - Good points: {{.GoodPoints}} - Idiom Points: {{.IdiomPoints}}</h1>
+        <pre class="content"><code>{{.Content}}</code></pre>
+        <a href="/c/">Create a snippit</a>
+    </body>
 </html>
