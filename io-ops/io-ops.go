@@ -29,10 +29,11 @@ func init() {
 	}
 }
 
-func UpdatePointsInDB(goodPointsDelta, idiomPointsDelta int, id string) {
+func UpdatePointsInDB(goodPointsDelta, idiomPointsDelta int, id string) (int, int){
 	goodPoints, idiomPoints := getPointsForId(id)
 	goodPoints, idiomPoints = goodPoints+goodPointsDelta, idiomPoints+idiomPointsDelta
 	db.Exec(preparedUpdatePoints, goodPoints, idiomPoints, id)
+	return goodPoints, idiomPoints
 }
 
 func getPointsForId(id string) (int, int) {

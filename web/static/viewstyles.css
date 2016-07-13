@@ -1,3 +1,29 @@
 .content {
     margin: 0px 10% 0px 10%;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.buttondiv {
+    margin: 0px 10% 0px 10%;
+}
+
+.btn.pointleft {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.btn.pointright {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.buttoninnerdiv {
+    padding: 0px;
+}
+
+.btn.filler {
+    width: 100%;
 }

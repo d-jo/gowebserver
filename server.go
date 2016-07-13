@@ -12,7 +12,7 @@ import (
 var templates = template.Must(template.New("main").Funcs(template.FuncMap{
 
 }).ParseGlob("web/templates/*.html"))
-var validPath = regexp.MustCompile("^/(e|write|s|p)/([a-zA-Z0-9]+)$")
+var validPath = regexp.MustCompile("^/(e|write|s|p|good|idiom)/([a-zA-Z0-9]+)$")
 
 func viewSnippit(w http.ResponseWriter, r *http.Request, id string) {
 	snip, err := io_ops.GetCodeSnipFromDB(id)
@@ -61,11 +61,23 @@ func executeViewTemplate(w http.ResponseWriter, templateName string, cs structs.
 	}
 }
 
+func handleGood(w http.ResponseWriter, r *http.Request, id string) {
+	newPoints, _ := io_ops.UpdatePointsInDB(1, 0, id)
+	fmt.Fprint(w, newPoints)
+}
+
+func handleIdiom(w http.ResponseWriter, r *http.Request, id string) {
+	_, newPoints := io_ops.UpdatePointsInDB(0, 1, id)
+	fmt.Fprint(w, newPoints)
+}
+
 func main() {
 	http.HandleFunc("/", createSnippit)
 	http.HandleFunc("/s/", makeHandler(viewSnippit))
 	http.HandleFunc("/write/", saveSnippit)
 	http.HandleFunc("/c/", createSnippit)
+	http.HandleFunc("/good/", makeHandler(handleGood))
+	http.HandleFunc("/idiom/", makeHandler(handleIdiom))
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 	http.ListenAndServe(":8080", nil)
 }
