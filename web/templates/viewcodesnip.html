@@ -19,7 +19,7 @@
             // upvote buttons
             function upvote(type) {
                 $.post("/" + type + "/" + window.location.pathname.slice(3), "", function (data, status) {
-                    alert("upvoted status: " + status + "\nresp: " + data)
+                    $("#"+type+"button").text(data)
                 })
             }
         </script>
