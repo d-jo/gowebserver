@@ -45,7 +45,7 @@ func GetCodeSnipFromDB(id string) (*structs.CodeSnip, error) {
 	var titleScan, authorScan, contentScan string
 	var goodPointsScan, idiomPointsScan int
 	err := db.QueryRow(preparedSelect, id).Scan(&titleScan, &authorScan, &contentScan, &goodPointsScan, &idiomPointsScan)
-	return &structs.CodeSnip{Title: titleScan, Content: contentScan, GoodPoints: goodPointsScan, IdiomPoints: idiomPointsScan}, err
+	return &structs.CodeSnip{Title: titleScan, Author: authorScan, Content: contentScan, GoodPoints: goodPointsScan, IdiomPoints: idiomPointsScan}, err
 }
 
 func InsertCodeSnipToDB(snip *structs.CodeSnip) (int, error) {

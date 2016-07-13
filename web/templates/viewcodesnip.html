@@ -18,9 +18,8 @@
         <title>{{.Title}} - GoCode</title>
     </head>
     <body>
-        <div class="left"><a href="/login/">Log in</a></div>
-        <h1>{{.Title}} - Good points: {{.GoodPoints}} - Idiom Points: {{.IdiomPoints}}</h1>
-        <pre class="content"><code>{{.Content}}</code></pre>
+        <h2>{{.Title}}<br /><small>By {{.Author}}</small></h2>
+        <pre class="content pre-scrollable"><code>{{.Content}}</code></pre>
         <a href="/c/">Create a snippit</a>
     </body>
 </html>
