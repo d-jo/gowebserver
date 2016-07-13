@@ -22,20 +22,35 @@
                     $("#"+type+"button").text(data)
                 })
             }
+            // redirect
+            function createRedirect() {
+                window.location = "/c/"
+            }
         </script>
         <title>{{.Title}} - GoCode</title>
     </head>
     <body>
-        <h2>{{.Title}}<br /><small>By {{.Author}}</small></h2>
-        <div class="row buttondiv">
-            <div class="col-md-6 buttoninnerdiv">
-                <button id="goodbutton" class="btn btn-success pointleft filler" onclick="upvote('good');">{{.GoodPoints}}</button>
+        <div class="row rowdiv top">
+            <div class="col-md-8 innerdiv">
+                <h2>{{.Title}}</h2>
             </div>
-            <div class="col-md-6 buttoninnerdiv">
-                <button id="idiombutton" class="btn btn-warning pointright filler" onclick="upvote('idiom');">{{.IdiomPoints}}</button>
+            <div class="col-md-4 innerdiv">
+                <h2><small>{{.Author}}</small></h2>
+            </div>
+        </div>
+        <div class="row rowdiv">
+            <div class="col-md-6 innerdiv">
+                <button id="goodbutton" class="btn btn-success point filler" onclick="upvote('good');">{{.GoodPoints}}</button>
+            </div>
+            <div class="col-md-6 innerdiv">
+                <button id="idiombutton" class="btn btn-warning point filler" onclick="upvote('idiom');">{{.IdiomPoints}}</button>
             </div>
         </div>
         <pre class="content pre-scrollable"><code>{{.Content}}</code></pre>
-        <a href="/c/">Create a snippit</a>
+        <div class="row rowdiv">
+            <div class="col-md-12 bottomdiv">
+                <button id="createbutton" class="btn btn-primary filler" onclick="createRedirect()">Create a snippit!</button>
+            </div>
+        </div>
     </body>
 </html>

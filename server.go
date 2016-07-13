@@ -35,9 +35,14 @@ func saveSnippit(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	author := r.FormValue("author")
 	body := r.FormValue("body")
+	if len(title) < 3 || len(author) < 3 || len(body) < 3 {
+		http.Redirect(w, r, "/c/", http.StatusFound)
+		return
+	}
 	id, err := io_ops.InsertCodeSnipToDB(&structs.CodeSnip{Title: title, Author: author, Content: body})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	http.Redirect(w, r, fmt.Sprintf("/s/%d", id), http.StatusFound)
 }
