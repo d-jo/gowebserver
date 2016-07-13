@@ -1,6 +1,6 @@
 package structs
 
 type CodeSnip struct {
-	Title, Content          string
+	Title, Content, Author  string
 	IdiomPoints, GoodPoints int
 }

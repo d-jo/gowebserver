@@ -21,7 +21,7 @@ func viewSnippit(w http.ResponseWriter, r *http.Request, id string) {
 		http.NotFound(w, r)
 		return
 	}
-	executeViewTemplate(w, "viewcodesnip", snip)
+	executeViewTemplate(w, "viewcodesnip", *snip)
 }
 
 func createSnippit(w http.ResponseWriter, r *http.Request) {
@@ -33,8 +33,9 @@ func createSnippit(w http.ResponseWriter, r *http.Request) {
 
 func saveSnippit(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
+	author := r.FormValue("author")
 	body := r.FormValue("body")
-	id, err := io_ops.InsertCodeSnipToDB(structs.CodeSnip{Title: title, Content: body})
+	id, err := io_ops.InsertCodeSnipToDB(&structs.CodeSnip{Title: title, Author: author, Content: body})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -61,6 +62,7 @@ func executeViewTemplate(w http.ResponseWriter, templateName string, cs structs.
 }
 
 func main() {
+	http.HandleFunc("/", createSnippit)
 	http.HandleFunc("/s/", makeHandler(viewSnippit))
 	http.HandleFunc("/write/", saveSnippit)
 	http.HandleFunc("/c/", createSnippit)

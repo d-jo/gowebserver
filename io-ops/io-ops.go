@@ -9,9 +9,9 @@ import (
 )
 
 var db sql.DB
-var preparedSelect = "SELECT title, content, good_points, idiom_points FROM snippits WHERE id=? LIMIT 1"
+var preparedSelect = "SELECT title, author, content, good_points, idiom_points FROM snippits WHERE id=? LIMIT 1"
 var preparedSelectPoints = "SELECT good_points, idiom_points FROM snippits WHERE id=? LIMIT 1"
-var preparedInsert = "INSERT INTO snippits (title, content, good_points, idiom_points) VALUES (?, ?, ?, ?)"
+var preparedInsert = "INSERT INTO snippits (title, author, content, good_points, idiom_points) VALUES (?, ?, ?, ?, ?)"
 var preparedUpdatePoints = "UPDATE snippits SET good_points=?,idiom_points=? WHERE id=?"
 
 func init() {
@@ -41,15 +41,15 @@ func getPointsForId(id string) (int, int) {
 	return goodPointsScan, idiomPointsScan
 }
 
-func GetCodeSnipFromDB(id string) (structs.CodeSnip, error) {
-	var titleScan, contentScan string
+func GetCodeSnipFromDB(id string) (*structs.CodeSnip, error) {
+	var titleScan, authorScan, contentScan string
 	var goodPointsScan, idiomPointsScan int
-	err := db.QueryRow(preparedSelect, id).Scan(&titleScan, &contentScan, &goodPointsScan, &idiomPointsScan)
-	return structs.CodeSnip{Title: titleScan, Content: contentScan, GoodPoints: goodPointsScan, IdiomPoints: idiomPointsScan}, err
+	err := db.QueryRow(preparedSelect, id).Scan(&titleScan, &authorScan, &contentScan, &goodPointsScan, &idiomPointsScan)
+	return &structs.CodeSnip{Title: titleScan, Content: contentScan, GoodPoints: goodPointsScan, IdiomPoints: idiomPointsScan}, err
 }
 
-func InsertCodeSnipToDB(snip structs.CodeSnip) (int, error) {
-	res, err := db.Exec(preparedInsert, snip.Title, snip.Content, snip.GoodPoints, snip.IdiomPoints)
+func InsertCodeSnipToDB(snip *structs.CodeSnip) (int, error) {
+	res, err := db.Exec(preparedInsert, snip.Title, snip.Author, snip.Content, snip.GoodPoints, snip.IdiomPoints)
 	if err != nil {
 		return -1, err
 	}
