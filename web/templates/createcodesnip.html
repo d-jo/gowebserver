@@ -2,19 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Create Snip - GoCode</title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/formstyles.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
 </head>
 <body>
 
+    <h1>
+        Create a GoLang Snippit</h1>
+    </h1>
+
     <form action="/write/" method="POST">
-        <input type="text" name="title" size="32" placeholder="Title"><br>
-        <input type="text" name="author" size="32" placeholder="Author"><br>
-        <textarea name="body" placeholder="Golang Code"></textarea><br>
-        <input type="submit" value="Submit">
+        <input class="forminner form-control" type="text" name="title" size="32" placeholder="Title"><br>
+        <input class="forminner form-control" type="text" name="author" size="32" placeholder="Author"><br>
+        <textarea class="forminner form-control code" name="body" placeholder="GoLang Code" rows="16"></textarea><br>
+        <input class="forminner form-control" type="submit" value="Submit">
     </form>
 
 </body>

@@ -1,0 +1,15 @@
+body {
+    width: 100%;
+    padding: 2% 10% 2% 10%;
+}
+
+.forminner {
+    margin-top: 5px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.code {
+    font-family: "Courier New";
+}
