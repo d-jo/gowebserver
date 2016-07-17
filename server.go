@@ -7,6 +7,8 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
+	"time"
+	"strings"
 )
 
 var templates = template.Must(template.New("main").Funcs(template.FuncMap{
@@ -68,12 +70,39 @@ func executeViewTemplate(w http.ResponseWriter, templateName string, cs structs.
 
 func handleGood(w http.ResponseWriter, r *http.Request, id string) {
 	newPoints, _ := io_ops.UpdatePointsInDB(1, 0, id)
+	setCookie(w, r, "good", id)
 	fmt.Fprint(w, newPoints)
 }
 
 func handleIdiom(w http.ResponseWriter, r *http.Request, id string) {
 	_, newPoints := io_ops.UpdatePointsInDB(0, 1, id)
+	setCookie(w, r, "idiom", id)
 	fmt.Fprint(w, newPoints)
+}
+
+func setCookie(w http.ResponseWriter, r *http.Request, dist, id string) {
+	name := dist + "votes"
+	cookie, err := r.Cookie(name)
+	expire := time.Now().Add(24 * time.Hour)
+	if err != nil {
+		cookie := http.Cookie{Name: name, Value: id, Expires: expire, Path: "/s/"}
+		http.SetCookie(w, &cookie)
+		return
+	}
+
+	if !idInCookie(cookie, id) {
+		http.SetCookie(w, &http.Cookie{Name: name, Value: cookie.Value + "," + id, Expires: expire, Path: "/s/"})
+	}
+}
+
+func idInCookie(cookie *http.Cookie, search string) bool{
+	values := strings.Split(cookie.Value, ",")
+	for _, val := range values {
+		if val == search {
+			return true
+		}
+	}
+	return false
 }
 
 func main() {

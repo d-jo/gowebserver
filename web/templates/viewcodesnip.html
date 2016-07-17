@@ -16,11 +16,25 @@
                 $('pre code').each(function(i, block) {
                     hljs.highlightBlock(block);
                 });
+
+                var cookies = document.cookie.split(";");
+                alert("all: " + document.cookie);
+                cookies.forEach(function (item, index) {
+                    var res = item.split("=");
+                    if (res[0].indexOf("goodvotes") > -1 || res[0].indexOf("idiomvotes") > -1) {
+                        if (res[1].split(",").indexOf(window.location.pathname.slice(3)) > -1) {
+                            var $button = $("#"+res[0].slice(0, res[0].indexOf('v')));
+                            $button.attr("disabled", true);
+                        }
+                    }
+                });
             });
             // upvote buttons
             function upvote(type) {
                 $.post("/" + type + "/" + window.location.pathname.slice(3), "", function (data, status) {
-                    $("#"+type+"button").text(data)
+                    var $button = $("#"+type);
+                    $button.text(data);
+                    $button.attr("disabled", true);
                 })
             }
             // redirect
@@ -41,10 +55,10 @@
         </div>
         <div class="row rowdiv">
             <div class="col-md-6 innerdiv">
-                <button id="goodbutton" class="btn btn-success point filler" onclick="upvote('good');">{{.GoodPoints}}</button>
+                <button id="good" class="btn btn-success point filler" onclick="upvote('good');">{{.GoodPoints}}</button>
             </div>
             <div class="col-md-6 innerdiv">
-                <button id="idiombutton" class="btn btn-warning point filler" onclick="upvote('idiom');">{{.IdiomPoints}}</button>
+                <button id="idiom" class="btn btn-warning point filler" onclick="upvote('idiom');">{{.IdiomPoints}}</button>
             </div>
         </div>
         <pre class="content pre-scrollable"><code>{{.Content}}</code></pre>
